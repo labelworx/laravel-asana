@@ -6,6 +6,14 @@ use \Torann\LaravelAsana\AsanaTask;
 
 class {{className}} extends AsanaTask
 {
+    /**
+     * You can set parameters in all fields using {{name}} syntax.  These can then be swapped out by
+     * using the applyData() method before you call createTask();
+     *
+     * USAGE - asana()->getTemplate('App\Asana\CreateSomeAsanaTask')->applyData(['name' => 'My Name'])->createTask();
+     *
+     * NOTE - If you pass data directly into the createTask() method then this will override data set in this class.
+     */
 
     /**
      * The ID or email of the user the task should be assigned to.  Leave unset for not assigned.

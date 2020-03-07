@@ -11,7 +11,7 @@ class AsanaMakeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:asana {className : Class (singular) for example ToDoAsanaTask}';
+    protected $signature = 'make:asana {name : Class (singular) for example ToDoAsanaTask}';
 
     /**
      * The console command description.
@@ -34,11 +34,10 @@ class AsanaMakeCommand extends Command
      * Execute the console command.
      *
      * @return bool|void|null
-     * @throws Exception
      */
     public function handle()
     {
-        $this->createTaskClassFile($this->argument('className'));
+        $this->createTaskClassFile($this->argument('name'));
     }
 
     /**
@@ -55,12 +54,14 @@ class AsanaMakeCommand extends Command
      * Create the Asana Task Template Class file
      *
      * @param $className
-     * @throws Exception
      */
     protected function createTaskClassFile($className)
     {
-        if (file_exists("Asana/{$className}.php")) {
-            throw new Exception('Asana task class already exists');
+        $this->checkDirectory();
+
+        if (file_exists(app_path('Asana')."/{$className}.php")) {
+            $this->error('Asana task class already exists');
+            exit;
         }
 
         $taskTemplate = str_replace(
@@ -70,5 +71,18 @@ class AsanaMakeCommand extends Command
         );
 
         file_put_contents(app_path("Asana/{$className}.php"), $taskTemplate);
+    }
+
+    /**
+     * Create the directory for template classes if it does not exist
+     */
+    protected function checkDirectory()
+    {
+        if (!file_exists(app_path('Asana'))) {
+            if (!mkdir(app_path('Asana'))) {
+                $this->error('Could not create ' . app_path('Asana') . ' directory');
+                exit;
+            }
+        }
     }
 }

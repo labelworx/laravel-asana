@@ -105,10 +105,12 @@ class Asana
      */
     public function createTask($data = [])
     {
-        if (isset($this->templateData)) {
-            $data = $this->templateData;
-        } elseif (!count($data)) {
-            throw new \Exception('Asana create task data not set');
+        if (isset($this->templateData) && isset($data)) {
+            $data = array_merge($this->templateData, $data);
+        }
+
+        if (!count($data)) {
+            throw new Exception('Asana create task data not set');
         }
 
         $data = array_merge([
@@ -120,13 +122,20 @@ class Asana
     }
 
     /**
+     * Replace data in Task Templates with array variables passed here
+     *
+     * USAGE - asana()->getTemplate('App\Asana\CreateSomeAsanaTask')->applyData(['name' => 'My Name'])->createTask();
+     *
      * @param $data
+     *
      * @return $this
+     * @author Chris Chambers https://github.com/labelworx
+     * @version 1.0
      */
     public function applyData($data)
     {
         foreach ($data as $key => $value) {
-            $data['{' . $key . '}'] = $value;
+            $data['{{' . $key . '}}'] = $value;
             unset($data[$key]);
         }
 
@@ -138,11 +147,15 @@ class Asana
     }
 
     /**
-     * Gets task data from a class
+     * Gets task data from a defined class.  Use php artisan make:asana to stub out a template class
      *
-     * @param $className
+     * USAGE - asana()->getTemplate('App\Asana\CreateSomeAsanaTask')->createTask();
+     *
+     * @param  string $className
      * @return $this
      * @throws Exception
+     * @author Chris Chambers https://github.com/labelworx
+     * @version 1.0
      */
     public function getTemplate($className)
     {
