@@ -18,6 +18,12 @@ Documentation for the package can be found on [Lyften.com](http://lyften.com/pro
 
 ## Change Log
 
+#### v0.5.0
+
+- Added support for Laravel 6 & 7
+- Added support for templates
+- Added artisan command - make:asana ClassName to scaffold Template Asana Class
+
 #### v0.4.0
 
 - Added attachment
