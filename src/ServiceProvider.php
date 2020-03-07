@@ -2,6 +2,7 @@
 
 namespace Torann\LaravelAsana;
 
+use App\Console\Commands\AsanaMakeCommand;
 use Illuminate\Support\Str;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -16,6 +17,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../config/asana.php', 'asana'
         );
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                AsanaMakeCommand::class
+            ]);
+        }
     }
 
     /**
