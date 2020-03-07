@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Torann\LaravelAsana;
 
 use Illuminate\Console\Command;
 
